@@ -1,0 +1,23 @@
+// crop image
+
+// check correct path!
+
+// check correct range!
+
+run("Enhance Contrast", "saturated=0.35");
+run("Apply LUT", "stack");
+
+run("Image Sequence... ", "format=TIFF use save=/Volumes/arendt/Nick/Experiments/Inhibitor_Activator_Testing/Caffeine/20211111_Caffeine_5mM_3/20211111_Caffeine_5mM_3_Seq");
+run("Focus Search Bar");
+run("Duplicate...", "duplicate");
+run("Focus Search Bar");
+run("Label...", "format=0 starting=0 interval=0.5 x=40 y=40 font=40 text=min range=1-500 use");
+run("Focus Search Bar");
+
+//check correct inhibitor + concentration
+//check correct time (range)
+
+run("Label...", "format=Text starting=0.0 interval=0.5 x=40 y=80 font=40 text=[Caffeine [5 mM]] range=56-500 use");
+run("Focus Search Bar");
+run("AVI... ", "compression=JPEG frame=12 save=/Volumes/arendt/Nick/Experiments/Inhibitor_Activator_Testing/Caffeine/20211111_Caffeine_5mM_3/20211111_Caffeine_5mM_3.avi");
+run("Close All")
