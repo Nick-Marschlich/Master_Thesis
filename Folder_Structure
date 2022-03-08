@@ -1,0 +1,26 @@
+Directory structure to make the macros and scripts work 
+
+- folder
+  - subfolder
+  --> file 
+
+- Nick
+  - Experiments
+    - Inhibitor
+      - NOC-12
+        - Triplicate1
+          - Raw (JPG files from the camera)
+          - Segmentation (images from Ilastik segmentation mask)
+          - Sequence (JPG images from camera but with adjusted contrast and brightness by FIJI)
+          --> AVI file (image sequence with labels by FIJI)
+          --> MyProject (Ilastik)
+          --> JPEG and PDF file (with plot this specific triplicate)
+          --> Excel file (with "Results" measured by FIJI with areas of segmentation mask)
+        - Triplicate2
+        - Triplicate3
+        --> R script for NOC-12
+        --> JPEG and PDF file (plot with all triplicates and mean) 
+      - IBMX
+      - ML-7
+      ...
+    - Scavenger
