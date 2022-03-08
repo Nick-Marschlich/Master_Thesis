@@ -1,0 +1,81 @@
+// choose an input/output directory requires two folders
+// this functions takes all images from the input directory > runs the Macro > and saves everything in the ouput folder
+// the files in the output folder keep the same name
+
+// e.g.: folder where all the Simple Segmentation from Ilastik was saved in sequence of around 100 images
+input = getDirectory("Choose an input directory");
+// e.g.: general folder of the specific inhibitor testing selectWindow("Summary");
+output = getDirectory("Choose an output directory");
+
+processFolder(input); 
+
+function processFolder(dir) {
+	list = getFileList(dir);
+	for (i=0; i<list.length; i++) {
+    	        if(endsWith(list[i], ".tiff")) { //add the file ending for your images
+    		    processFile(dir, output, list[i]);
+		} else if(endsWith(list[i], "/") && !matches(output, ".*" + substring(list[i], 0, lengthOf(list[i])-1) + ".*")) {
+   		    //if the file encountered is a subfolder, go inside and run the whole process in the subfolder
+    		    processFolder(""+dir+list[i]);
+		} else {
+    		    //if the file encountered is not an image nor a folder just print the name in the log window
+       		    print(dir + list[i]);
+		}
+    }
+}
+
+
+// everything in this function will be applied to each image in the input folder
+function processFile(inputFolder, output, file) {
+	open(inputFolder + file);
+	  
+	title = getTitle();
+	// remove the space " " by and underscore "_"
+	// print(replace(title, "Simple Segmentation", "Simple_Segmentation"))
+
+	one = title+" (blue)";		// incurrent canals 
+	two = title+" (red)";		// excurrent canals
+	three = title+" (green)";	// remaining tissue 
+
+	// Ilastik saves "Simple Segmentation" in weird shades of black
+	// glasbey can convert every segmentation in the greatest contrast possible
+		run("glasbey", "display=[title] view=net.imagej.display.DefaultDatasetView@1cb69c16");
+
+	// next commands just work with RGB files > convert
+		run("RGB Color");
+
+	// split channels depending on the color/tissue 
+	// blue = incurrenct canals; red = excurrent canals; green = remaining tissue 
+		run("Split Channels");
+	
+		selectWindow(title+" (blue)");		// incurrent canals 
+	// set the threshold to 129, 255 to use threshold for canals
+	// set measurement and 'limit to threshold'
+	// measure the area
+		setAutoThreshold("Default dark");
+	//run("Threshold...");
+	//setThreshold(129, 255);
+		setOption("BlackBackground", false);
+		run("Convert to Mask");
+		run("Set Measurements...", "area limit redirect=None decimal=3");
+		run("Measure");						// incurrent canals = uneven numbers
+
+		selectWindow(title+" (red)");		// excurrent canals
+	// set the threshold to 129, 255 to use threshold for canals
+	// set measurement and 'limit to threshold'
+	// measure the area
+		setAutoThreshold("Default dark");
+	//run("Threshold...");
+	//setThreshold(129, 255);
+		setOption("BlackBackground", false);
+		run("Convert to Mask");
+		run("Set Measurements...", "area limit redirect=None decimal=3");
+		run("Measure");						// excurrent canals = even numbers
+
+		run("Close All");
+
+}
+
+	// save the Summary window with all the measurements as a .csv file 
+		selectWindow("Results");
+		saveAs("Results", output + "Results.csv");
