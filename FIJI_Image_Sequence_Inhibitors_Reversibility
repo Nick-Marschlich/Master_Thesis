@@ -1,0 +1,20 @@
+// crop image
+
+// check correct path!
+
+run("Enhance Contrast", "saturated=0.35");
+run("Apply LUT", "stack");
+
+run("Image Sequence... ", "format=TIFF use save=/Volumes/arendt/Nick/Experiments/Inhibitor_Activator_Testing/IBMX/20211124_IBMX_100uM_5_reversibility/20211124_IBMX_100uM_5_reversibility_Seq");
+run("Duplicate...", "duplicate");
+run("Label...", "format=0 starting=0 interval=0.5 x=40 y=40 font=40 text=min range=1-500 use");
+
+// check correct scavenger + concentration
+// check correct time (range)
+
+// scavenger
+run("Label...", "format=Text starting=0.0 interval=0.5 x=40 y=80 font=40 text=[IBMX [100 uM]] range=40-500 use");
+// inhibitor
+run("Label...", "format=Text starting=0.0 interval=0.5 x=40 y=120 font=40 text=[medium exchange] range=85-500 use");
+run("AVI... ", "compression=JPEG frame=12 save=/Volumes/arendt/Nick/Experiments/Inhibitor_Activator_Testing/IBMX/20211124_IBMX_100uM_5_reversibility/20211124_IBMX_100uM_5_reversibility.avi");
+run("Close All")
