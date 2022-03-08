@@ -6,6 +6,11 @@ Here, different activators, inhibitors and scavengers were used to analyze diffe
 Image sequences were taken with a camera to analyze the behavior of sponges when exposed to different compounds.
 These image sequences were saved as TIF files. 
 
+Folder_Structure
+  - explains how the folders, subfolders and files were arranged
+  - for some macros and scripts the directories have to be changed 
+  - this could help to make it work, otherwise, some files might not be found be the macros and scripts
+
 FIJI_Image_Sequence_Inhibitors
   - can be used to label the image sequence
   - crop the images first
